@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  main:
+    entrypoint: ["tail", "-F", "anything"]
+    depends_on:
+      - postgres
+      - redis
+    build:
+      context: ./
+    volumes:
+      - type: bind
+        source: ..
+        target: /workspace
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: dev
+      POSTGRES_DB: dev
+  redis:
+    image: redis:6-alpine
